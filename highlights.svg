@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#050607"/><stop offset=".55" stop-color="#121313"/><stop offset="1" stop-color="#080808"/>
+        </linearGradient>
+        <radialGradient id="glow"><stop stop-color="#ff6b35" stop-opacity=".35"/><stop offset="1" stop-color="#ff6b35" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="1200" height="650" fill="url(#bg)"/>
+      <circle cx="850" cy="260" r="330" fill="url(#glow)"/>
+      <g opacity=".35" stroke="#ff6b35" fill="none">
+        <path d="M0 520 L300 220 L620 540 L980 120 L1200 340" stroke-width="4"/>
+        <path d="M0 580 L360 300 L650 590 L1020 180 L1200 300" stroke-width="2"/>
+        <circle cx="860" cy="270" r="210" stroke-width="2"/>
+        <circle cx="860" cy="270" r="160" stroke-width="1"/>
+      </g>
+      <g transform="translate(760 120)">
+        <path d="M100 20 L190 70 L220 190 L175 330 L100 390 L25 330 L-20 190 L10 70 Z" fill="#111" stroke="#ff6b35" stroke-width="8"/>
+        <path d="M50 115 L100 75 L150 115 L135 245 L100 290 L65 245 Z" fill="#ff6b35" opacity=".9"/>
+        <path d="M72 150 L128 150 L118 210 L100 230 L82 210 Z" fill="#111"/>
+        <path d="M20 325 L-90 405 M180 325 L290 405" stroke="#ff6b35" stroke-width="20" stroke-linecap="round"/>
+      </g>
+      <text x="70" y="150" fill="#ff6b35" font-family="Arial" font-size="34" font-weight="700" letter-spacing="8">TOURNAMENT</text>
+      <text x="70" y="225" fill="#fff" font-family="Arial Black,Arial" font-size="70" font-weight="900">HIGHLIGHTS</text>
+      <text x="70" y="570" fill="#aaa" font-family="Arial" font-size="22" letter-spacing="5">TNG ESPORTS • SEPTEMBER 2026</text>
+      <text x="1030" y="555" fill="#ff6b35" font-family="Arial" font-size="55" text-anchor="middle">▶</text>
+    </svg>
