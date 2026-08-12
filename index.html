@@ -36,33 +36,121 @@
 </section>
 
 
+<style>
+  #hosts.hosts-section{padding:72px 20px;text-align:center;background:transparent}
+  #hosts .hosts-grid{display:grid;grid-template-columns:repeat(2,minmax(0,260px));justify-content:center;gap:24px;margin:38px auto 0;max-width:600px}
+  #hosts .host-card{width:auto;padding:28px 20px;border:1px solid rgba(255,255,255,.14);border-radius:20px;background:rgba(255,255,255,.035);box-sizing:border-box}
+  #hosts .host-profile{width:110px;height:110px;margin:0 auto 18px;border-radius:50%;border:2px solid rgba(255,255,255,.24);background:rgba(255,255,255,.035)}
+  #hosts .host-card h3{margin:10px 0 6px;font-size:20px;letter-spacing:1px}
+  #hosts .host-card p{margin:0 0 16px;font-size:12px;letter-spacing:1.5px;opacity:.65}
+  #hosts .host-card a{display:inline-block;padding:9px 16px;border:1px solid rgba(255,255,255,.25);border-radius:999px;text-decoration:none;font-weight:700}
+  #hosts .hosts-whatsapp{margin-top:34px}
+  #hosts .hosts-whatsapp a{display:inline-block;padding:14px 24px;border-radius:999px;text-decoration:none;font-weight:800;letter-spacing:.5px;border:1px solid rgba(255,255,255,.2)}
+  @media(max-width:650px){#hosts .hosts-grid{grid-template-columns:1fr;max-width:320px}}
+</style>
+
 <section id="hosts" class="hosts-section">
-  <div class="section-head">
-    <p class="eyebrow">MEET THE TEAM</p>
-    <h2>TOURNAMENT HOSTS</h2>
-    <p>The people behind the TNG ESPORTS tournament.</p>
-  </div>
+  <div class="hosts-inner">
 
-  <div class="hosts-grid">
-    <article class="host-card">
-      <div class="host-profile" aria-label="Arunachalam profile picture placeholder"></div>
-      <h3>ARUNACHALAM</h3>
-      <p>TOURNAMENT HOST</p>
-      <a href="https://www.instagram.com/invites/contact/?utm_source=ig_contact_invite&utm_medium=copy_link&utm_content=pg1wuw8" target="_blank" rel="noopener noreferrer">Instagram</a>
-    </article>
+    <div class="hosts-heading">
+      <p class="eyebrow">MEET THE TEAM</p>
+      <h2>TOURNAMENT HOSTS</h2>
+      <p>Connect with the official TNG ESPORTS tournament hosts.</p>
+    </div>
 
-    <article class="host-card">
-      <div class="host-profile" aria-label="Vishnu profile picture placeholder"></div>
-      <h3>VISHNU</h3>
-      <p>TOURNAMENT HOST</p>
-      <a href="https://www.instagram.com/_vishnu_offix?igsh=MTg5Znh2MmdteW9qeA==" target="_blank" rel="noopener noreferrer">Instagram</a>
-    </article>
-  </div>
+    <div class="hosts-grid">
 
-  <div class="hosts-whatsapp">
-    <a href="https://chat.whatsapp.com/KkyIFYOcjts27IKrTXtRQE" target="_blank" rel="noopener noreferrer">
-      JOIN TNG ESPORTS WHATSAPP
-    </a>
+      <article class="host-card">
+        <div class="host-avatar" aria-label="Arunachalam profile placeholder">
+          <span>AR</span>
+        </div>
+        <div class="host-info">
+          <h3>ARUNACHALAM</h3>
+          <p>TOURNAMENT HOST</p>
+        </div>
+        <a class="social-link instagram-link"
+           href="https://www.instagram.com/invites/contact/?utm_source=ig_contact_invite&utm_medium=copy_link&utm_content=pg1wuw8"
+           target="_blank" rel="noopener noreferrer" aria-label="Open Arunachalam Instagram">
+          <span class="social-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="img">
+              <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+              <circle cx="12" cy="12" r="4.2"></circle>
+              <circle cx="17.4" cy="6.7" r="1.2" class="icon-fill"></circle>
+            </svg>
+          </span>
+          <span>Instagram</span>
+          <span class="social-arrow">↗</span>
+        </a>
+      </article>
+
+      <article class="host-card">
+        <div class="host-avatar" aria-label="Vishnu profile placeholder">
+          <span>VI</span>
+        </div>
+        <div class="host-info">
+          <h3>VISHNU</h3>
+          <p>TOURNAMENT HOST</p>
+        </div>
+        <a class="social-link instagram-link"
+           href="https://www.instagram.com/_vishnu_offix?igsh=MTg5Znh2MmdteW9qeA=="
+           target="_blank" rel="noopener noreferrer" aria-label="Open Vishnu Instagram">
+          <span class="social-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="img">
+              <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+              <circle cx="12" cy="12" r="4.2"></circle>
+              <circle cx="17.4" cy="6.7" r="1.2" class="icon-fill"></circle>
+            </svg>
+          </span>
+          <span>Instagram</span>
+          <span class="social-arrow">↗</span>
+        </a>
+      </article>
+
+    </div>
+
+    <!-- Reserved space for future contact / requirements -->
+    <div id="contact-requirements" class="contact-requirements">
+      <div class="contact-heading">
+        <p class="eyebrow">CONTACT &amp; REQUIREMENTS</p>
+        <h2>PLAYER SUPPORT</h2>
+        <p>This area is reserved for future tournament contact details, entry requirements, FAQs and important updates.</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-placeholder">
+          <span class="placeholder-icon">+</span>
+          <strong>CONTACT DETAILS</strong>
+          <small>Add phone, email or support information here.</small>
+        </div>
+
+        <div class="contact-placeholder">
+          <span class="placeholder-icon">+</span>
+          <strong>TOURNAMENT REQUIREMENTS</strong>
+          <small>Add entry rules, eligibility and requirements here.</small>
+        </div>
+
+        <div class="contact-placeholder">
+          <span class="placeholder-icon">+</span>
+          <strong>IMPORTANT UPDATES</strong>
+          <small>Add future announcements and tournament notices here.</small>
+        </div>
+      </div>
+
+      <div class="community-actions">
+        <a class="community-link whatsapp-link"
+           href="https://chat.whatsapp.com/KkyIFYOcjts27IKrTXtRQE"
+           target="_blank" rel="noopener noreferrer" aria-label="Join TNG ESPORTS WhatsApp group">
+          <span class="social-icon whatsapp-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="img">
+              <path class="icon-fill" d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Zm0 2a7 7 0 0 1 0 14c-1.2 0-2.4-.3-3.4-.9l-.4-.2-2.8.7.8-2.7-.3-.5A7 7 0 0 1 12 5Zm-3.1 3.2c-.2 0-.5.1-.7.3-.2.2-.7.7-.7 1.6s.7 1.9.8 2.1c.1.1 1.4 2.3 3.5 3.2 1.7.8 2.1.6 2.5.6.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1-.1-.1-.3-.2-.6-.3l-1.1-.5c-.3-.1-.5-.1-.7.2l-.5.7c-.1.2-.3.2-.6.1-.3-.2-1.1-.4-2-1.3-.7-.7-1.2-1.5-1.3-1.8-.1-.3 0-.5.2-.6l.4-.5c.2-.2.2-.4.1-.6l-.5-1.2c-.1-.3-.3-.5-.6-.5Z"></path>
+            </svg>
+          </span>
+          <span>Join TNG ESPORTS WhatsApp</span>
+          <span class="social-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
   </div>
 </section>
 
