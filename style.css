@@ -303,3 +303,49 @@
     min-height: 125px;
   }
 }
+
+
+/* TNG ESPORTS — Host profile photos */
+.host-avatar {
+  overflow: hidden;
+  position: relative;
+}
+
+.host-avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 24%;
+  border-radius: 50%;
+}
+
+
+/* Official-style social icon colors */
+.instagram-link .social-icon {
+  color: #E1306C;
+}
+.instagram-link .social-icon svg {
+  stroke: none;
+}
+.instagram-link .social-icon svg rect {
+  fill: url(#instagramGradient);
+}
+.instagram-link .social-icon svg circle {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.8;
+}
+.instagram-link .social-icon svg .icon-fill {
+  fill: #fff;
+}
+
+.whatsapp-link .social-icon {
+  color: #25D366;
+}
+.whatsapp-link .social-icon svg {
+  fill: #25D366;
+}
+.whatsapp-link .social-icon svg .icon-fill {
+  fill: #fff;
+}
