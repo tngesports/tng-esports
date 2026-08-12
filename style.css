@@ -381,3 +381,45 @@ html { scroll-behavior: smooth; }
   .bottom-section-nav { width: calc(100% - 24px); padding: 16px 8px; }
   .bottom-section-nav a { font-size: 10px; padding: 9px 11px; }
 }
+
+/* Professional top Contact & Support */
+.nav-contact {
+  border: 1px solid rgba(225,174,39,.55);
+  padding: 10px 14px !important;
+  border-radius: 4px;
+  font-weight: 800;
+  letter-spacing: .06em;
+}
+.nav-contact:hover {
+  background: rgba(225,174,39,.10);
+  border-color: rgba(225,174,39,.9);
+}
+.host-whatsapp-wrap {
+  display:flex;
+  justify-content:center;
+  margin: 18px auto 8px;
+}
+.host-whatsapp {
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  min-width:280px;
+  padding:14px 20px !important;
+  color:#fff !important;
+  text-decoration:none !important;
+  border:1px solid rgba(37,211,102,.65) !important;
+  background:rgba(37,211,102,.08) !important;
+  border-radius:14px !important;
+  font-weight:800;
+}
+.whatsapp-icon svg {
+  width:28px !important;
+  height:28px !important;
+  display:block;
+}
+.host-whatsapp .arrow { opacity:.65; font-size:22px; }
+@media(max-width:720px){
+  .nav-contact { padding:8px 10px !important; font-size:10px; }
+  .host-whatsapp { width:calc(100% - 24px); min-width:0; }
+}
