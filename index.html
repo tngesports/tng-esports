@@ -9,12 +9,13 @@
 </head>
 <body>
 
-<!-- Mobile / compact menu -->
+<!-- TNG ESPORTS menu -->
 <div class="menu-wrap">
-  <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" onclick="toggleTngMenu()">
+  <button class="menu-toggle" type="button" aria-label="Open menu"
+          aria-expanded="false" onclick="toggleTngMenu()">
     <span></span><span></span><span></span>
   </button>
-  <div id="tngMenu" class="tng-menu">
+  <div id="tngMenu" class="tng-menu" aria-hidden="true">
     <a href="#contact-support" onclick="closeTngMenu()">Contact &amp; Support</a>
     <a href="#hosts" onclick="closeTngMenu()">Tournament Hosts</a>
     <a href="#terms" onclick="closeTngMenu()">Terms &amp; Conditions</a>
@@ -23,7 +24,7 @@
 
 <header class="nav">
   <a class="brand" href="#home"><img src="tng-logo.png" alt="TNG Esports logo"><span>TNG ESPORTS</span></a>
-  <nav><a href="#home">Home</a><a href="#tournament">Tournament</a><a href="#highlights">Highlights</a><a href="#rules">Rules</a><a href="#gallery">Gallery</a><a href="#hosts">Hosts</a><a class="nav-contact" href="#contact-support">Contact &amp; Support</a></nav>
+  <nav aria-hidden="true"></nav>
   <a class="register-top" href="#register">REGISTER SOON</a>
 </header>
 
@@ -106,26 +107,20 @@
 </section>
 
 
-<section id="contact-support" class="contact-section-bottom">
-  <div class="hosts-inner">
-    <div class="contact-requirements" class="contact-requirements">
-      <div class="contact-heading">
-        <p class="eyebrow">CONTACT &amp; REQUIREMENTS</p>
-        <h2>PLAYER SUPPORT</h2>
-        <p>Official TNG ESPORTS support &amp; tournament contact.</p>
-      </div>
-<div class="community-actions">
-        <a class="community-link whatsapp-link"
-           href="https://chat.whatsapp.com/KkyIFYOcjts27IKrTXtRQE"
-           target="_blank" rel="noopener noreferrer" aria-label="Join TNG ESPORTS WhatsApp group">
-          <span>Join TNG ESPORTS WhatsApp</span>
-          <span class="social-arrow">↗</span>
-        </a>
-      </div>
-    </div>
 
-  </div>
-</section>
+<section id="contact-support" class="contact-section-bottom">
+  <div class="contact-support-card">
+    <div class="contact-heading">
+      <p class="eyebrow">TNG ESPORTS</p>
+      <h2>CONTACT &amp; SUPPORT</h2>
+      <p>For tournament registration, announcements and official support.</p>
+    </div>
+    <a class="community-link whatsapp-link"
+       href="https://chat.whatsapp.com/KkyIFYOcjts27IKrTXtRQE"
+       target="_blank" rel="noopener noreferrer">
+      <span>Join TNG ESPORTS WhatsApp</span>
+      <span class="social-arrow">↗</span>
+    </a>
   </div>
 </section>
 <section id="hosts" class="hosts-section">
@@ -190,13 +185,6 @@
     <!-- Reserved space for future contact / requirements -->
   </div>
 </section>
-<div class="bottom-section-nav">
-  <a href="#hosts">Tournament Hosts</a>
-  <a href="#contact-support">Contact &amp; Support</a>
-  <a href="#home">Back to Top ↑</a>
-</div>
-
-
 <section id="terms" class="terms-section">
   <div class="terms-card">
     <p class="eyebrow">TNG ESPORTS</p>
@@ -214,17 +202,21 @@
 
 <footer><b>TNG ESPORTS × FREE LANCHING PVT</b><span>ONE PLAYER • ONE BATTLE • ONE CHAMPION</span></footer>
 
+
 <script>
 function toggleTngMenu() {
   const menu = document.getElementById('tngMenu');
   const button = document.querySelector('.menu-toggle');
-  const open = menu.classList.toggle('open');
+  const open = !menu.classList.contains('open');
+  menu.classList.toggle('open', open);
+  menu.setAttribute('aria-hidden', open ? 'false' : 'true');
   button.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 function closeTngMenu() {
   const menu = document.getElementById('tngMenu');
   const button = document.querySelector('.menu-toggle');
   menu.classList.remove('open');
+  menu.setAttribute('aria-hidden', 'true');
   button.setAttribute('aria-expanded', 'false');
 }
 document.addEventListener('click', function(e) {
