@@ -25,7 +25,7 @@
 <header class="nav">
   <a class="brand" href="#home"><img src="tng-logo.png" alt="TNG Esports logo"><span>TNG ESPORTS</span></a>
   <nav aria-hidden="true"></nav>
-  <a class="register-top" href="#register">REGISTER SOON</a>
+  <a class="register-top" href="#registration">REGISTER NOW</a>
 </header>
 
 <section id="home" class="hero">
@@ -167,6 +167,43 @@
   </div>
 </section>
 
+
+<section id="registration" class="registration-section">
+  <div class="registration-card">
+    <div class="registration-heading">
+      <p class="eyebrow">TNG ESPORTS</p>
+      <h2>TOURNAMENT REGISTRATION</h2>
+      <p>Entry Fee <strong>₹149</strong> • Test payment mode</p>
+    </div>
+    <form id="tngRegistrationForm" class="registration-form">
+      <div class="registration-grid">
+        <label>Full Name
+          <input name="fullName" type="text" required placeholder="Enter your name">
+        </label>
+        <label>In-Game Name
+          <input name="ign" type="text" required placeholder="Enter your game name">
+        </label>
+        <label>Free Fire UID
+          <input name="uid" type="text" inputmode="numeric" required placeholder="Enter your UID">
+        </label>
+        <label>WhatsApp Number
+          <input name="whatsapp" type="tel" required placeholder="Enter WhatsApp number">
+        </label>
+        <label>Instagram ID
+          <input name="instagram" type="text" placeholder="@username">
+        </label>
+      </div>
+      <label class="terms-check">
+        <input name="terms" type="checkbox" required>
+        <span>I agree to the TNG ESPORTS Terms &amp; Conditions.</span>
+      </label>
+      <div class="payment-preview"><span>Entry Fee</span><strong>₹149</strong></div>
+      <button type="submit" class="register-submit">CONTINUE TO ₹149 PAYMENT</button>
+      <p id="registrationMessage" class="registration-message" role="status"></p>
+    </form>
+  </div>
+</section>
+
 <footer><b>TNG ESPORTS × FREE LANCHING PVT</b><span>ONE PLAYER • ONE BATTLE • ONE CHAMPION</span></footer>
 
 
@@ -189,6 +226,29 @@ function closeTngMenu() {
 document.addEventListener('click', function(e) {
   const wrap = document.querySelector('.menu-wrap');
   if (wrap && !wrap.contains(e.target)) closeTngMenu();
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("tngRegistrationForm");
+  const msg = document.getElementById("registrationMessage");
+  if (!form) return;
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    const ref = "TNG-" + Date.now().toString().slice(-8);
+    data.registrationRef = ref;
+    data.entryFee = 149;
+    data.paymentStatus = "PAYMENT_PENDING";
+    data.createdAt = new Date().toISOString();
+    localStorage.setItem("tngRegistration_" + ref, JSON.stringify(data));
+    msg.className = "registration-message success";
+    msg.innerHTML = "Registration details saved for testing.<br><strong>Registration Ref: " +
+      ref + "</strong><br><small>Razorpay Test Checkout will be connected next. No payment has been marked successful.</small>";
+    form.reset();
+  });
 });
 </script>
 

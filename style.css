@@ -919,3 +919,18 @@ footer {
     font-size: 11px !important;
   }
 }
+
+.registration-section{padding:36px 16px 30px}
+.registration-card{width:min(820px,100%);margin:0 auto;padding:28px 22px 24px;border:1px solid rgba(225,174,39,.28);border-radius:18px;background:rgba(255,255,255,.025);box-sizing:border-box}
+.registration-heading{text-align:center;margin-bottom:22px}.registration-heading h2{margin:6px 0 8px}.registration-heading p:last-child{margin:0;font-size:13px;opacity:.78}.registration-heading strong{color:#e1ae27}
+.registration-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.registration-form label:not(.terms-check){display:flex;flex-direction:column;gap:7px;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.registration-form input[type=text],.registration-form input[type=tel]{width:100%;box-sizing:border-box;padding:12px 13px;border:1px solid rgba(255,255,255,.13);border-radius:8px;background:rgba(0,0,0,.22);color:inherit;outline:none}
+.registration-form input:focus{border-color:rgba(225,174,39,.65)}
+.terms-check{display:flex!important;flex-direction:row!important;align-items:flex-start;gap:9px;margin:17px 0;font-size:11px!important;line-height:1.5;text-transform:none!important;letter-spacing:0!important}
+.terms-check input{margin-top:2px;accent-color:#e1ae27}
+.payment-preview{display:flex;justify-content:space-between;align-items:center;margin:12px 0;padding:14px 15px;border:1px solid rgba(225,174,39,.2);border-radius:9px;background:rgba(225,174,39,.035)}
+.payment-preview strong{font-size:21px;color:#e1ae27}
+.register-submit{width:100%;min-height:46px;border:1px solid rgba(225,174,39,.55);border-radius:8px;background:rgba(225,174,39,.09);color:inherit;font-weight:900;letter-spacing:.06em;cursor:pointer}
+.registration-message{margin:13px 0 0;text-align:center;line-height:1.5;font-size:12px;min-height:18px}
+@media(max-width:650px){.registration-section{padding:26px 12px 22px}.registration-card{padding:24px 15px 20px;border-radius:15px}.registration-grid{grid-template-columns:1fr;gap:11px}}
