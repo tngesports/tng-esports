@@ -231,6 +231,32 @@ document.addEventListener('click', function(e) {
 
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+  // TNG ESPORTS Firebase project
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2vaxxFMTLNCp4CCELcLKOK",
+    authDomain: "tng-esports-974f6.firebaseapp.com",
+    projectId: "tng-esports-974f6",
+    storageBucket: "tng-esports-974f6.firebasestorage.app",
+    messagingSenderId: "240565450608"
+  };
+
+  // appId is not required for this Firestore-only browser setup.
+  window.tngSaveRegistration = async function (data) {
+    try {
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      await addDoc(collection(db, "registrations"), data);
+      return true;
+    } catch (error) {
+      console.error("Firebase save failed:", error);
+      return false;
+    }
+  };
+</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -273,11 +299,14 @@ document.addEventListener("DOMContentLoaded", function () {
         data.razorpayPaymentId = response.razorpay_payment_id || "";
         data.paidAt = new Date().toISOString();
         localStorage.setItem("tngRegistration_" + ref, JSON.stringify(data));
+        window.tngSaveRegistration(data).then(function(saved) {
+          msg.className = "registration-message success";
+          msg.innerHTML = "<strong>Payment successful (TEST MODE).</strong><br>" +
+            "Registration Ref: <strong>" + ref + "</strong><br>" +
+            "Payment ID: <strong>" + (response.razorpay_payment_id || "N/A") + "</strong><br>" +
+            (saved ? "<small>Registration saved to Firebase.</small>" : "<small>Payment saved locally; Firebase save needs configuration/rules.</small>");
+        });
 
-        msg.className = "registration-message success";
-        msg.innerHTML = "<strong>Payment successful (TEST MODE).</strong><br>" +
-          "Registration Ref: <strong>" + ref + "</strong><br>" +
-          "Payment ID: <strong>" + (response.razorpay_payment_id || "N/A") + "</strong>";
         form.reset();
       },
       modal: {

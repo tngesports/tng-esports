@@ -1,0 +1,23 @@
+TNG ESPORTS – Firestore rules for TEST MODE
+
+Firebase Console → Firestore Database → Rules
+Replace the existing rules with:
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /registrations/{registrationId} {
+      allow create: if request.resource.data.entryFee == 149
+        && request.resource.data.paymentStatus == 'PAYMENT_SUCCESS'
+        && request.resource.data.registrationRef is string
+        && request.resource.data.razorpayPaymentId is string
+        && request.resource.data.fullName is string
+        && request.resource.data.ign is string
+        && request.resource.data.uid is string
+        && request.resource.data.whatsapp is string;
+      allow read, update, delete: if false;
+    }
+  }
+}
+
+IMPORTANT: These rules are suitable only for TESTING. The browser can technically fake a successful payment. For LIVE ₹149 collection, use a server/backend to create Razorpay Orders and verify the payment signature before writing PAYMENT_SUCCESS to Firestore.
