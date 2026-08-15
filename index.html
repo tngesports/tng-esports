@@ -230,6 +230,8 @@ document.addEventListener('click', function(e) {
 </script>
 
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("tngRegistrationForm");
@@ -237,17 +239,70 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!form) return;
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+
     const data = Object.fromEntries(new FormData(form).entries());
     const ref = "TNG-" + Date.now().toString().slice(-8);
     data.registrationRef = ref;
     data.entryFee = 149;
     data.paymentStatus = "PAYMENT_PENDING";
     data.createdAt = new Date().toISOString();
+
+    // Save the registration locally before opening Razorpay Test Checkout.
     localStorage.setItem("tngRegistration_" + ref, JSON.stringify(data));
-    msg.className = "registration-message success";
-    msg.innerHTML = "Registration details saved for testing.<br><strong>Registration Ref: " +
-      ref + "</strong><br><small>Razorpay Test Checkout will be connected next. No payment has been marked successful.</small>";
-    form.reset();
+
+    const options = {
+      key: "rzp_test_TPxl1Q7NUmYbAk",
+      amount: 14900,
+      currency: "INR",
+      name: "TNG ESPORTS",
+      description: "Solo Free Fire Tournament Entry Fee",
+      notes: {
+        registration_ref: ref,
+        player_name: data.fullName || "",
+        free_fire_uid: data.uid || ""
+      },
+      prefill: {
+        name: data.fullName || "",
+        contact: data.whatsapp || ""
+      },
+      theme: {
+        color: "#f0bd2e"
+      },
+      handler: function (response) {
+        data.paymentStatus = "PAYMENT_SUCCESS";
+        data.razorpayPaymentId = response.razorpay_payment_id || "";
+        data.paidAt = new Date().toISOString();
+        localStorage.setItem("tngRegistration_" + ref, JSON.stringify(data));
+
+        msg.className = "registration-message success";
+        msg.innerHTML = "<strong>Payment successful (TEST MODE).</strong><br>" +
+          "Registration Ref: <strong>" + ref + "</strong><br>" +
+          "Payment ID: <strong>" + (response.razorpay_payment_id || "N/A") + "</strong>";
+        form.reset();
+      },
+      modal: {
+        ondismiss: function () {
+          msg.className = "registration-message";
+          msg.innerHTML = "Payment window closed. Registration Ref: <strong>" + ref + "</strong>. You can try again.";
+        }
+      }
+    };
+
+    if (typeof Razorpay === "undefined") {
+      msg.className = "registration-message";
+      msg.textContent = "Razorpay Checkout could not load. Please check your internet connection and try again.";
+      return;
+    }
+
+    const rzp = new Razorpay(options);
+    rzp.on("payment.failed", function (response) {
+      data.paymentStatus = "PAYMENT_FAILED";
+      data.paymentError = response.error ? response.error.description : "Payment failed";
+      localStorage.setItem("tngRegistration_" + ref, JSON.stringify(data));
+      msg.className = "registration-message";
+      msg.innerHTML = "Payment failed in TEST MODE.<br>Registration Ref: <strong>" + ref + "</strong>";
+    });
+    rzp.open();
   });
 });
 </script>
