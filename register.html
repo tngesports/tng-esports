@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TNG eSPORTS — Register</title><link rel="stylesheet" href="style.css"></head>
+<body><header><div class="wrap nav"><a class="brand" href="index.html">TNG <span>ESPORTS</span><small>REGISTRATION</small></a><nav class="navlinks"><a href="index.html">HOME</a><a href="leaderboard.html">🏆 LEADERBOARD</a><a href="admin.html">🔐 ADMIN</a></nav></div></header>
+<main class="section"><div class="wrap"><div class="eyebrow">SEPTEMBER 2026</div><h2>REGISTER NOW</h2><p class="lead">Complete the form. This demo registration stores details in Firebase only after the required payment reference is marked as successful.</p>
+<div class="card"><div class="formgrid">
+<div><label>Full Name</label><input id="fullName" required></div><div><label>Free Fire ID</label><input id="ffid" required></div>
+<div><label>Email</label><input id="email" type="email" required></div><div><label>WhatsApp</label><input id="whatsapp"></div>
+<div><label>Payment Status</label><select id="paymentStatus"><option value="PAYMENT_SUCCESS">PAYMENT_SUCCESS</option></select></div><div><label>Razorpay Payment ID / Reference</label><input id="paymentId" required></div>
+<div class="wide"><button class="btn orange full" id="registerBtn">SUBMIT REGISTRATION</button><div id="status" class="status">Entry fee: ₹149</div></div>
+</div></div></div></main><footer>TNG eSPORTS</footer>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import {getFirestore,collection,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import {firebaseConfig} from "./firebase-config.js";
+const db=getFirestore(initializeApp(firebaseConfig));
+const $=id=>document.getElementById(id);
+$("registerBtn").onclick=async()=>{
+ const fullName=$("fullName").value.trim(),ffid=$("ffid").value.trim(),email=$("email").value.trim(),whatsapp=$("whatsapp").value.trim(),paymentStatus=$("paymentStatus").value,paymentId=$("paymentId").value.trim();
+ if(!fullName||!ffid||!email||!paymentId){$("status").textContent="Please fill all required fields.";return}
+ $("status").textContent="Submitting...";
+ try{await addDoc(collection(db,"registrations"),{fullName,ffid,email,whatsapp,paymentStatus,paymentId,entryFee:149,createdAt:serverTimestamp()});$("status").innerHTML='<span class="success">✅ Registration submitted successfully.</span>';$("registerBtn").disabled=true}
+ catch(e){$("status").innerHTML='<span class="error">❌ '+e.message+'</span>'}
+};
+</script></body></html>

@@ -1,0 +1,28 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /scores/{scoreId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null
+        && request.auth.token.email == 'arunachalamb710@gmail.com'
+        && request.resource.data.player is string
+        && request.resource.data.ffid is string
+        && request.resource.data.match is string
+        && request.resource.data.kills is number
+        && request.resource.data.points is number;
+    }
+
+    match /registrations/{registrationId} {
+      allow create: if request.resource.data.entryFee == 149
+        && request.resource.data.paymentStatus == 'PAYMENT_SUCCESS'
+        && request.resource.data.paymentId is string
+        && request.resource.data.fullName is string
+        && request.resource.data.ffid is string
+        && request.resource.data.email is string;
+      allow read, update, delete: if request.auth != null
+        && request.auth.token.email == 'arunachalamb710@gmail.com';
+    }
+  }
+}
