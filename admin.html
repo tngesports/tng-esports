@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a0a0a">
+<title>TNG eSPORTS — Admin Panel</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080808;color:#fff;font-family:Arial,Helvetica,sans-serif}
+.wrap{width:min(760px,100%);margin:auto;padding:20px 14px 40px}
+.card{background:#121212;border:1px solid #292929;border-radius:18px;padding:20px;margin-bottom:14px;box-shadow:0 10px 30px #0005}
+h1{font-size:30px;margin:0 0 5px}
+h2{font-size:20px;margin:0 0 15px}
+.muted{color:#aaa}
+label{display:block;font-size:13px;color:#bbb;margin:10px 0 5px}
+input,select{width:100%;padding:13px 12px;border:1px solid #3a3a3a;border-radius:10px;background:#0b0b0b;color:#fff;font-size:16px;outline:none}
+input:focus,select:focus{border-color:#777}
+button{width:100%;padding:13px;border:0;border-radius:10px;background:#ff5a16;color:#fff;font-weight:700;font-size:16px;margin-top:10px}
+button.secondary{background:#292929}
+button.danger{background:#7d1d1d}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.status{margin-top:12px;padding:11px;border-radius:10px;background:#0c0c0c;color:#bbb;line-height:1.4}
+.hidden{display:none!important}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logout{width:auto;margin:0;padding:9px 13px}
+.score{border-top:1px solid #292929;padding:13px 0;display:flex;justify-content:space-between;gap:15px}
+.score:first-child{border-top:0}
+.score small{color:#aaa}
+.badge{display:inline-block;padding:5px 8px;border-radius:999px;background:#242424;color:#ddd;font-size:12px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.score{display:block}.score .right{margin-top:8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="card">
+  <div class="top">
+    <div>
+      <h1>🏆 TNG eSPORTS</h1>
+      <div class="muted">Tournament Admin Panel</div>
+    </div>
+    <span id="stateBadge" class="badge">OFFLINE</span>
+  </div>
+</div>
+
+<div id="loginBox" class="card">
+  <h2>🔐 Admin Login</h2>
+  <label>Email</label>
+  <input id="email" type="email" placeholder="Admin email" autocomplete="username">
+  <label>Password</label>
+  <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+  <button id="loginBtn">LOGIN</button>
+  <div id="loginStatus" class="status">Use the Firebase admin account.</div>
+</div>
+
+<div id="panel" class="hidden">
+
+<div class="card">
+  <div class="top">
+    <div>
+      <h2>Live Score Update</h2>
+      <div id="signedIn" class="muted"></div>
+    </div>
+    <button id="logoutBtn" class="secondary logout">LOGOUT</button>
+  </div>
+
+  <label>Player Name</label>
+  <input id="player" placeholder="Example: Arun">
+
+  <label>Free Fire ID</label>
+  <input id="ffid" placeholder="Example: 123456789">
+
+  <div class="grid">
+    <div>
+      <label>Match</label>
+      <input id="match" placeholder="Match 1">
+    </div>
+    <div>
+      <label>Kills</label>
+      <input id="kills" type="number" min="0" step="1" value="0">
+    </div>
+  </div>
+
+  <label>Points</label>
+  <input id="points" type="number" min="0" step="1" value="0">
+
+  <button id="saveBtn">💾 SAVE SCORE</button>
+  <div id="saveStatus" class="status">Enter the player details and save.</div>
+</div>
+
+<div class="card">
+  <h2>📊 Current Scores</h2>
+  <div id="scores">Loading...</div>
+</div>
+
+</div>
+</div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import {getFirestore,collection,addDoc,onSnapshot} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const firebaseConfig={
+ apiKey:"AIzaSyD2vaxxFMTLNcP4CCELcLKOKNGE_OVN0dY",
+ authDomain:"tng-esports-974f6.firebaseapp.com",
+ projectId:"tng-esports-974f6",
+ storageBucket:"tng-esports-974f6.firebasestorage.app",
+ messagingSenderId:"240565450608",
+ appId:"1:240565450608:web:99a656546c5658016501b5",
+ measurementId:"G-WN1GWJQC33"
+};
+
+const ADMIN_EMAIL="arunachalamb710@gmail.com";
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+
+const $=id=>document.getElementById(id);
+const loginBox=$("loginBox"),panel=$("panel");
+
+$("loginBtn").addEventListener("click",async()=>{
+ const email=$("email").value.trim();
+ const password=$("password").value;
+ if(!email||!password){$("loginStatus").textContent="Enter email and password.";return}
+ $("loginBtn").disabled=true;
+ $("loginStatus").textContent="Signing in...";
+ try{
+   const cred=await signInWithEmailAndPassword(auth,email,password);
+   if(cred.user.email.toLowerCase()!==ADMIN_EMAIL.toLowerCase()){
+     await signOut(auth);
+     throw new Error("This account is not the tournament admin account.");
+   }
+   $("loginStatus").textContent="Login successful.";
+ }catch(e){
+   $("loginStatus").textContent="❌ "+friendlyError(e);
+ }finally{$("loginBtn").disabled=false}
+});
+
+$("logoutBtn").addEventListener("click",()=>signOut(auth));
+
+onAuthStateChanged(auth,user=>{
+ if(user && user.email && user.email.toLowerCase()===ADMIN_EMAIL.toLowerCase()){
+   loginBox.classList.add("hidden");
+   panel.classList.remove("hidden");
+   $("signedIn").textContent="Signed in: "+user.email;
+   $("stateBadge").textContent="ADMIN ONLINE";
+ }else{
+   loginBox.classList.remove("hidden");
+   panel.classList.add("hidden");
+   $("stateBadge").textContent="OFFLINE";
+ }
+});
+
+$("saveBtn").addEventListener("click",async()=>{
+ const user=auth.currentUser;
+ if(!user || user.email.toLowerCase()!==ADMIN_EMAIL.toLowerCase()){
+   $("saveStatus").textContent="❌ Admin login required.";
+   return;
+ }
+
+ const player=$("player").value.trim();
+ const ffid=$("ffid").value.trim();
+ const match=$("match").value.trim();
+ const kills=Number($("kills").value);
+ const points=Number($("points").value);
+
+ if(!player||!ffid||!match||!Number.isFinite(kills)||!Number.isFinite(points)||kills<0||points<0){
+   $("saveStatus").textContent="❌ Fill all fields correctly.";
+   return;
+ }
+
+ $("saveBtn").disabled=true;
+ $("saveStatus").textContent="Saving...";
+ try{
+   await addDoc(collection(db,"scores"),{
+     player:player,
+     ffid:ffid,
+     match:match,
+     kills:Math.floor(kills),
+     points:Math.floor(points),
+     updatedBy:user.email,
+     createdAt:Date.now()
+   });
+   $("saveStatus").textContent="✅ Score saved successfully.";
+   $("player").value="";
+   $("ffid").value="";
+   $("match").value="";
+   $("kills").value="0";
+   $("points").value="0";
+ }catch(e){
+   $("saveStatus").textContent="❌ "+friendlyError(e);
+ }finally{$("saveBtn").disabled=false}
+});
+
+onSnapshot(collection(db,"scores"),snap=>{
+ const rows=[];
+ snap.forEach(d=>rows.push({id:d.id,...d.data()}));
+ rows.sort((a,b)=>(Number(b.points)||0)-(Number(a.points)||0)||(Number(b.kills)||0)-(Number(a.kills)||0));
+ if(!rows.length){$("scores").innerHTML='<div class="muted">No scores added yet.</div>';return}
+ $("scores").innerHTML=rows.map((s,i)=>`
+ <div class="score">
+   <div><b>#${i+1} ${esc(s.player)}</b><br><small>FF ID: ${esc(s.ffid)} • ${esc(s.match)}</small></div>
+   <div class="right"><b>${Number(s.points)||0} pts</b><br><small>${Number(s.kills)||0} kills</small></div>
+ </div>`).join("");
+},err=>{
+ $("scores").innerHTML='<div class="status">❌ Cannot read scores. Check Firestore Rules.</div>';
+});
+
+function friendlyError(e){
+ const c=e?.code||"";
+ if(c.includes("invalid-credential")||c.includes("wrong-password"))return"Wrong email or password.";
+ if(c.includes("user-not-found"))return"Admin account not found.";
+ if(c.includes("too-many-requests"))return"Too many attempts. Try again later.";
+ if(c.includes("permission-denied"))return"Firestore permission denied. Check Rules.";
+ return e?.message||"Something went wrong.";
+}
+function esc(v){
+ return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+}
+</script>
+</body>
+</html>
