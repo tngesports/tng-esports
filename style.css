@@ -936,3 +936,10 @@ footer {
 @media(max-width:650px){.registration-section{padding:26px 12px 22px}.registration-card{padding:24px 15px 20px;border-radius:15px}.registration-grid{grid-template-columns:1fr;gap:11px}}
 
 .leaderboard-nav{display:inline-block;padding:9px 13px;text-decoration:none;font-weight:800;letter-spacing:.04em;}
+
+/* Navigation links for the three main actions — preserves the original visual style */
+.navlinks,.leaderboard-nav{display:inline-flex;align-items:center;gap:10px}
+@media(max-width:900px){
+  header.nav nav{display:none}
+  .tng-menu a.action-link{display:block}
+}

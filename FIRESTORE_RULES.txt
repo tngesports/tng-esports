@@ -1,22 +1,22 @@
-TNG ESPORTS – FINAL FIRESTORE RULES
+TNG ESPORTS – FIRESTORE RULES
 
-Firebase Console → Firestore Database → Rules
-Replace the rules with the following and click Publish.
+Firebase Console → Firestore Database → Rules → replace with:
 
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
 
     match /scores/{scoreId} {
       allow read: if true;
-      allow create, update, delete: if request.auth != null
+      allow create, update: if request.auth != null
         && request.auth.token.email == 'arunachalamb710@gmail.com'
         && request.resource.data.player is string
         && request.resource.data.ffid is string
         && request.resource.data.match is string
         && request.resource.data.kills is number
         && request.resource.data.points is number;
+      allow delete: if request.auth != null
+        && request.auth.token.email == 'arunachalamb710@gmail.com';
     }
 
     match /registrations/{registrationId} {
@@ -32,8 +32,5 @@ service cloud.firestore {
   }
 }
 
-IMPORTANT:
-The current website uses Razorpay TEST checkout. The browser can technically
-fake a successful test callback. For real ₹149 collection, use a backend/server
-to create Razorpay Orders and verify the Razorpay signature before accepting
-PAYMENT_SUCCESS.
+NOTE: Razorpay key in the current site is TEST mode. Real ₹149 collection requires
+Razorpay Live Key + server-side order/signature verification.

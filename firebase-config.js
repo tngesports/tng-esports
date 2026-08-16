@@ -7,5 +7,3 @@ export const firebaseConfig = {
   appId: "1:240565450608:web:99a656546c5658016501b5",
   measurementId: "G-WN1GWJQC33"
 };
-
-const ADMIN_EMAIL = "arunachalamb710@gmail.com";
