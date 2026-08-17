@@ -1,36 +1,20 @@
-TNG ESPORTS – FIRESTORE RULES
-
-Firebase Console → Firestore Database → Rules → replace with:
-
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    match /scores/{scoreId} {
-      allow read: if true;
-      allow create, update: if request.auth != null
-        && request.auth.token.email == 'arunachalamb710@gmail.com'
-        && request.resource.data.player is string
-        && request.resource.data.ffid is string
-        && request.resource.data.match is string
-        && request.resource.data.kills is number
-        && request.resource.data.points is number;
-      allow delete: if request.auth != null
-        && request.auth.token.email == 'arunachalamb710@gmail.com';
-    }
-
     match /registrations/{registrationId} {
       allow create: if request.resource.data.entryFee == 149
         && request.resource.data.paymentStatus == 'PAYMENT_SUCCESS'
-        && request.resource.data.paymentId is string
+        && request.resource.data.registrationRef is string
+        && request.resource.data.razorpayPaymentId is string
         && request.resource.data.fullName is string
-        && request.resource.data.ffid is string
-        && request.resource.data.email is string;
-      allow read, update, delete: if request.auth != null
+        && request.resource.data.uid is string
+        && request.resource.data.whatsapp is string;
+      allow read, update, delete: if false;
+    }
+    match /scores/{scoreId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null
         && request.auth.token.email == 'arunachalamb710@gmail.com';
     }
   }
 }
-
-NOTE: Razorpay key in the current site is TEST mode. Real ₹149 collection requires
-Razorpay Live Key + server-side order/signature verification.

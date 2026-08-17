@@ -1,19 +1,48 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TNG eSPORTS — Admin</title><link rel="stylesheet" href="style.css"></head>
-<body><header><div class="wrap nav"><a class="brand" href="index.html">TNG <span>ESPORTS</span><small>ADMIN PANEL</small></a><nav class="navlinks"><a href="index.html">HOME</a><a href="register.html">📝 REGISTER</a><a href="leaderboard.html">🏆 LEADERBOARD</a></nav></div></header>
-<main class="admin-shell"><div class="wrap">
-<section id="loginCard" class="card"><h2>🔐 Admin Login</h2><p class="lead">Use the Firebase Email/Password account for the admin email.</p><input id="email" type="email" placeholder="Admin email" value="arunachalamb710@gmail.com"><input id="password" type="password" placeholder="Password"><button class="btn orange full" id="loginBtn">LOGIN</button><div id="loginStatus" class="status">Admin access required.</div></section>
-<section id="adminCard" class="card hidden"><div class="admin-top"><div><h2 style="margin:0">Update Leaderboard</h2><div id="userLabel" class="lead"></div></div><button class="btn dark" id="logoutBtn">LOGOUT</button></div>
-<div class="formgrid" style="margin-top:20px"><div><label>Player Name</label><input id="player"></div><div><label>Free Fire ID</label><input id="ffid"></div><div><label>Kills</label><input id="kills" type="number" min="0" value="0"></div><div><label>Points</label><input id="points" type="number" min="0" value="0"></div><div class="wide"><label>Match Name / Number</label><input id="match" placeholder="Match 1"></div><div class="wide"><button class="btn orange full" id="saveBtn">SAVE SCORE</button><div id="saveStatus" class="status">Admin only.</div></div></div></section>
-<section id="scoresCard" class="card hidden"><h2>Current Scores</h2><div id="scoresList" class="score-list">Loading...</div></section>
-</div></main><footer>TNG eSPORTS • ADMIN</footer>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TNG eSPORTS — Admin Panel</title><link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-page">
+<header class="nav">
+  <a class="brand" href="index.html"><img src="tng-logo.png" alt="TNG Esports logo"><span>TNG ESPORTS</span></a>
+  <nav><a href="index.html">HOME</a><a href="register.html">📝 REGISTER</a><a href="leaderboard.html">🏆 LEADERBOARD</a></nav>
+</header>
+<main class="admin-main">
+  <div class="admin-wrap">
+    <div class="admin-heading"><p class="eyebrow">TNG ESPORTS • SECURE ACCESS</p><h1>🔐 ADMIN PANEL</h1><p>Manage live tournament scores from one place.</p></div>
+    <section id="loginCard" class="admin-card">
+      <h2>Admin Login</h2><p class="muted">Sign in with the Firebase Email/Password account.</p>
+      <label>Email<input id="email" type="email" value="arunachalamb710@gmail.com" autocomplete="username"></label>
+      <label>Password<input id="password" type="password" placeholder="Enter admin password" autocomplete="current-password"></label>
+      <button class="admin-btn gold" id="loginBtn">LOGIN</button>
+      <div id="loginStatus" class="admin-status">Admin access required.</div>
+    </section>
+    <section id="adminCard" class="admin-card hidden">
+      <div class="admin-card-top"><div><p class="eyebrow">LIVE SCORE CONTROL</p><h2>Update Leaderboard</h2><div id="userLabel" class="muted"></div></div><button class="admin-btn dark" id="logoutBtn">LOGOUT</button></div>
+      <div class="admin-form-grid">
+        <label>Player Name<input id="player" type="text" placeholder="Player name"></label>
+        <label>Free Fire ID<input id="ffid" type="text" placeholder="FF ID"></label>
+        <label>Kills<input id="kills" type="number" min="0" value="0"></label>
+        <label>Points<input id="points" type="number" min="0" value="0"></label>
+        <label class="wide">Match Name / Number<input id="match" type="text" placeholder="Match 1"></label>
+        <div class="wide"><button class="admin-btn gold full" id="saveBtn">SAVE SCORE</button><div id="saveStatus" class="admin-status">Only the authorized admin can save scores.</div></div>
+      </div>
+    </section>
+    <section id="scoresCard" class="admin-card hidden"><div class="section-title-row"><div><p class="eyebrow">FIRESTORE</p><h2>Current Scores</h2></div><a class="admin-btn outline" href="leaderboard.html">VIEW LEADERBOARD →</a></div><div id="scoresList" class="score-list">Loading…</div></section>
+  </div>
+</main>
+<footer>TNG ESPORTS • ADMIN</footer>
 <script type="module">
 import {auth,db,onAuthStateChanged,signInWithEmailAndPassword,signOut,collection,addDoc,query,orderBy,onSnapshot,serverTimestamp,ADMIN_EMAIL} from "./firebase-module.js";
-const $=id=>document.getElementById(id),loginCard=$("loginCard"),adminCard=$("adminCard"),scoresCard=$("scoresCard");
-$("loginBtn").onclick=async()=>{const email=$("email").value.trim(),password=$("password").value;$("loginStatus").textContent="Signing in...";try{await signInWithEmailAndPassword(auth,email,password);$("loginStatus").innerHTML='<span class="success">Login successful.</span>'}catch(e){$("loginStatus").innerHTML='<span class="error">Login failed: '+e.message+'</span>'}};
+const $=id=>document.getElementById(id);
+const loginCard=$("loginCard"),adminCard=$("adminCard"),scoresCard=$("scoresCard");
+$("loginBtn").onclick=async()=>{const email=$("email").value.trim(),password=$("password").value;$("loginStatus").textContent="Signing in…";try{await signInWithEmailAndPassword(auth,email,password)}catch(e){$("loginStatus").innerHTML='<span class="error">Login failed: '+esc(e.message)+'</span>'}};
 $("logoutBtn").onclick=()=>signOut(auth);
-$("saveBtn").onclick=async()=>{const player=$("player").value.trim(),ffid=$("ffid").value.trim(),kills=Number($("kills").value||0),points=Number($("points").value||0),match=$("match").value.trim();if(!player||!ffid||!match){$("saveStatus").textContent="Enter player name, FF ID and match.";return}$("saveStatus").textContent="Saving...";try{await addDoc(collection(db,"scores"),{player,ffid,kills,points,match,createdAt:serverTimestamp()});$("saveStatus").innerHTML='<span class="success">✅ Score saved.</span>';["player","ffid","match"].forEach(x=>$(x).value="");$("kills").value=0;$("points").value=0}catch(e){$("saveStatus").innerHTML='<span class="error">❌ Save failed: '+e.message+'</span>'}};
-onAuthStateChanged(auth,user=>{const ok=!!user&&user.email===ADMIN_EMAIL;loginCard.classList.toggle("hidden",!!user);adminCard.classList.toggle("hidden",!ok);scoresCard.classList.toggle("hidden",!ok);if(user)$("userLabel").textContent=user.email;if(user&&!ok)$("loginStatus").innerHTML='<span class="error">This account is not the authorized admin.</span>'});
-const q=query(collection(db,"scores"),orderBy("createdAt","desc"));onSnapshot(q,snap=>{const list=$("scoresList");if(snap.empty){list.textContent="No scores yet.";return}list.innerHTML="";snap.forEach(doc=>{const s=doc.data(),d=document.createElement("div");d.className="score-row";d.innerHTML=`<span><b>${esc(s.player||"")}</b><br><small>${esc(s.ffid||"")} • ${esc(s.match||"")}</small></span><span>Kills: ${Number(s.kills||0)}</span><span>Points: ${Number(s.points||0)}</span><span>✓</span>`;list.appendChild(d)})},()=>{$("scoresList").textContent="Scores unavailable. Check Firestore rules."});
+$("saveBtn").onclick=async()=>{const player=$("player").value.trim(),ffid=$("ffid").value.trim(),kills=Number($("kills").value||0),points=Number($("points").value||0),match=$("match").value.trim();if(!player||!ffid||!match){$("saveStatus").textContent="Enter player name, FF ID and match.";return}$("saveStatus").textContent="Saving…";try{await addDoc(collection(db,"scores"),{player,ffid,kills,points,match,createdAt:serverTimestamp()});$("saveStatus").innerHTML='<span class="success">✓ Score saved successfully.</span>';["player","ffid","match"].forEach(x=>$(x).value="");$("kills").value=0;$("points").value=0}catch(e){$("saveStatus").innerHTML='<span class="error">Save failed: '+esc(e.message)+'</span>'}};
+onAuthStateChanged(auth,user=>{const ok=!!user&&user.email===ADMIN_EMAIL;loginCard.classList.toggle("hidden",!!user);adminCard.classList.toggle("hidden",!ok);scoresCard.classList.toggle("hidden",!ok);if(user&&ok){$("userLabel").textContent=user.email;$("loginStatus").textContent=""}else if(user&&!ok){$("loginStatus").innerHTML='<span class="error">This account is not the authorized admin.</span>';signOut(auth)}});
+const q=query(collection(db,"scores"),orderBy("createdAt","desc"));onSnapshot(q,snap=>{const list=$("scoresList");if(snap.empty){list.textContent="No scores yet.";return}list.innerHTML="";snap.forEach(doc=>{const s=doc.data(),d=document.createElement("div");d.className="score-row";d.innerHTML=`<div><b>${esc(s.player||"")}</b><small>${esc(s.ffid||"")} • ${esc(s.match||"")}</small></div><span>Kills <b>${Number(s.kills||0)}</b></span><span>Points <b>${Number(s.points||0)}</b></span>`;list.appendChild(d)})},()=>{$("scoresList").textContent="Scores unavailable. Check Firestore rules."});
 function esc(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
-</script></body></html>
+</script>
+</body></html>

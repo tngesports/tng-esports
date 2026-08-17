@@ -17,8 +17,8 @@
   </button>
   <div id="tngMenu" class="tng-menu" aria-hidden="true">
     <a href="leaderboard.html">🏆 LEADERBOARD</a>
-    <a href="#registration" onclick="closeTngMenu()">📝 REGISTER NOW</a>
     <a href="admin.html">🔐 ADMIN</a>
+    <a href="#registration" onclick="closeTngMenu()">📝 REGISTER NOW</a>
     <a href="#contact-support" onclick="closeTngMenu()">Contact &amp; Support</a>
     <a href="#hosts" onclick="closeTngMenu()">Tournament Hosts</a>
     <a href="#terms" onclick="closeTngMenu()">Terms &amp; Conditions</a>
@@ -28,9 +28,10 @@
 <header class="nav">
   <a class="brand" href="#home"><img src="tng-logo.png" alt="TNG Esports logo"><span>TNG ESPORTS</span></a>
   <nav aria-hidden="true">
-<a href="leaderboard.html" class="leaderboard-nav">🏆 LEADERBOARD</a>
-  <a class="register-top" href="#registration">📝 REGISTER NOW</a>
-  <a href="admin.html" class="leaderboard-nav">🔐 ADMIN</a>
+    <a href="leaderboard.html" class="leaderboard-nav">🏆 LEADERBOARD</a>
+    <a href="admin.html" class="leaderboard-nav">🔐 ADMIN</a>
+    <a class="register-top" href="#registration">📝 REGISTER NOW</a>
+  </nav>
 </header>
 
 <section id="home" class="hero">
@@ -242,12 +243,11 @@ document.addEventListener('click', function(e) {
 
   // TNG ESPORTS Firebase project
   const firebaseConfig = {
-    apiKey: "AIzaSyD2vaxxFMTLNcP4CCELcLKOKNGE_OVN0dY",
+    apiKey: "AIzaSyD2vaxxFMTLNCp4CCELcLKOK",
     authDomain: "tng-esports-974f6.firebaseapp.com",
     projectId: "tng-esports-974f6",
     storageBucket: "tng-esports-974f6.firebasestorage.app",
-    messagingSenderId: "240565450608",
-    appId: "1:240565450608:web:99a656546c5658016501b5"
+    messagingSenderId: "240565450608"
   };
 
   // appId is not required for this Firestore-only browser setup.
@@ -275,8 +275,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const data = Object.fromEntries(new FormData(form).entries());
     const ref = "TNG-" + Date.now().toString().slice(-8);
     data.registrationRef = ref;
-    data.ffid = data.uid || "";
-    data.email = data.email || "";
     data.entryFee = 149;
     data.paymentStatus = "PAYMENT_PENDING";
     data.createdAt = new Date().toISOString();
@@ -305,7 +303,6 @@ document.addEventListener("DOMContentLoaded", function () {
       handler: function (response) {
         data.paymentStatus = "PAYMENT_SUCCESS";
         data.razorpayPaymentId = response.razorpay_payment_id || "";
-        data.paymentId = response.razorpay_payment_id || "";
         data.paidAt = new Date().toISOString();
         localStorage.setItem("tngRegistration_" + ref, JSON.stringify(data));
         window.tngSaveRegistration(data).then(function(saved) {

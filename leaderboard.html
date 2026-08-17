@@ -1,19 +1,14 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TNG eSPORTS — Live Leaderboard</title><link rel="stylesheet" href="style.css"></head>
-<body><header><div class="wrap nav"><a class="brand" href="index.html">TNG <span>ESPORTS</span><small>LIVE LEADERBOARD</small></a><nav class="navlinks"><a href="index.html">HOME</a><a href="register.html">REGISTER</a><a href="admin.html">🔐 ADMIN</a></nav></div></header>
-<main class="section"><div class="wrap"><div class="eyebrow">🔴 LIVE LEADERBOARD</div><h2>TNG eSPORTS</h2><p class="lead">Live scores • Match-wise results • Overall ranking</p>
-<div class="card" style="margin-top:25px"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><h3 style="margin:0">OVERALL LEADERBOARD</h3><select id="filter" style="max-width:180px"><option value="overall">Overall</option></select></div>
-<div class="tablewrap" style="margin-top:18px"><table class="table"><thead><tr><th>RANK</th><th>PLAYER</th><th>FF ID</th><th>MATCHES</th><th>KILLS</th><th>POINTS</th></tr></thead><tbody id="body"><tr><td colspan="6">Loading live scores...</td></tr></tbody></table></div></div></div></main><footer>TNG eSPORTS • LIVE SCORES</footer>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TNG eSPORTS — Live Leaderboard</title><link rel="stylesheet" href="style.css"></head>
+<body class="leaderboard-page">
+<header class="nav"><a class="brand" href="index.html"><img src="tng-logo.png" alt="TNG Esports logo"><span>TNG ESPORTS</span></a><nav><a href="index.html">HOME</a><a href="register.html">📝 REGISTER</a><a href="admin.html">🔐 ADMIN</a></nav></header>
+<main class="leaderboard-main"><div class="leaderboard-wrap"><div class="lb-heading"><p class="eyebrow">🔴 LIVE LEADERBOARD</p><h1>TNG eSPORTS</h1><p>Live scores • Match-wise results • Overall ranking</p></div><section class="lb-card"><div class="lb-card-top"><div><p class="eyebrow">OVERALL RANKING</p><h2>OVERALL LEADERBOARD</h2></div><select id="filter"><option value="overall">Overall</option></select></div><div class="table-scroll"><table><thead><tr><th>RANK</th><th>PLAYER</th><th>FF ID</th><th>MATCHES</th><th>KILLS</th><th>POINTS</th></tr></thead><tbody id="body"><tr><td colspan="6" class="empty">Loading live scores…</td></tr></tbody></table></div></section><div class="lb-actions"><a class="lb-btn" href="index.html">← HOME</a><a class="lb-btn gold-btn" href="register.html">📝 REGISTER NOW</a></div></div></main><footer>TNG ESPORTS • LIVE SCORES</footer>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import {getFirestore,collection,onSnapshot} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 import {firebaseConfig} from "./firebase-config.js";
-const db=getFirestore(initializeApp(firebaseConfig)), body=document.getElementById("body");
-onSnapshot(collection(db,"scores"),snap=>{
- const map=new Map();
- snap.forEach(d=>{const s=d.data(),id=s.ffid||s.player||d.id;if(!map.has(id))map.set(id,{player:s.player||"",ffid:s.ffid||"",kills:0,points:0,matches:0});const x=map.get(id);x.kills+=Number(s.kills||0);x.points+=Number(s.points||0);x.matches++});
- const rows=[...map.values()].sort((a,b)=>b.points-a.points||b.kills-a.kills||a.player.localeCompare(b.player));
- body.innerHTML=rows.length?rows.map((s,i)=>`<tr><td class="rank">#${i+1}</td><td>${esc(s.player)}</td><td>${esc(s.ffid)}</td><td>${s.matches}</td><td>${s.kills}</td><td><b>${s.points}</b></td></tr>`).join(""):'<tr><td colspan="6">No live scores yet.</td></tr>';
-},err=>body.innerHTML='<tr><td colspan="6" class="error">Leaderboard unavailable. Check Firestore rules.</td></tr>');
+const db=getFirestore(initializeApp(firebaseConfig)),body=document.getElementById("body");
+onSnapshot(collection(db,"scores"),snap=>{const map=new Map();snap.forEach(d=>{const s=d.data(),id=s.ffid||s.player||d.id;if(!map.has(id))map.set(id,{player:s.player||"",ffid:s.ffid||"",kills:0,points:0,matches:0});const x=map.get(id);x.kills+=Number(s.kills||0);x.points+=Number(s.points||0);x.matches++});const rows=[...map.values()].sort((a,b)=>b.points-a.points||b.kills-a.kills||a.player.localeCompare(b.player));body.innerHTML=rows.length?rows.map((s,i)=>`<tr><td class="rank">#${i+1}</td><td><strong>${esc(s.player)}</strong></td><td>${esc(s.ffid)}</td><td>${s.matches}</td><td>${s.kills}</td><td class="points">${s.points}</td></tr>`).join(""):'<tr><td colspan="6" class="empty">No live scores yet.</td></tr>'},err=>body.innerHTML='<tr><td colspan="6" class="error empty">Leaderboard unavailable. Check Firestore rules.</td></tr>');
 function esc(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 </script></body></html>

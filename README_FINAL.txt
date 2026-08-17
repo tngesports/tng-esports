@@ -1,26 +1,9 @@
 TNG ESPORTS FINAL PACKAGE
 
-This package keeps the original TNG ESPORTS website/payment flow and adds the
-live leaderboard and private admin dashboard without replacing the original
-main design.
-
-FILES
-- index.html: original main website + original ₹149 Razorpay TEST checkout + Firebase registration save
-- leaderboard.html: separate live leaderboard page
-- admin.html: separate admin dashboard
-- style.css: original design
-- tng-logo.png: uploaded TNG logo
-- FIRESTORE_RULES.txt: final Firestore rules
-
-DEPLOY
-1. Upload ALL files to the GitHub Pages repository root.
-2. Firebase Authentication → enable Email/Password.
-3. Ensure arunachalamb710@gmail.com exists as an Authentication user.
-4. Firestore Database → Rules → paste the rules from FIRESTORE_RULES.txt → Publish.
-5. Open /admin.html and log in with the authorised admin email/password.
-6. Publish scores from Admin; leaderboard.html updates live.
-
-PAYMENT
-The original site uses Razorpay TEST checkout (rzp_test_*). It does not collect
-real money. For live ₹149 payments, configure a Razorpay backend/order and
-signature verification.
+IMPORTANT:
+1. This package preserves the original TNG ESPORTS home page and its in-page ₹149 Razorpay TEST checkout registration flow.
+2. leaderboard.html and admin.html are separate pages and are styled to match the original site.
+3. Upload/replace ALL files in the GitHub Pages repository.
+4. Firebase Authentication must have Email/Password enabled and an admin user with email arunachalamb710@gmail.com.
+5. Publish the rules from FIRESTORE_RULES.txt in Firebase Firestore Rules.
+6. The current Razorpay key in index.html is TEST mode. Live money collection requires a live key and server-side payment verification.
