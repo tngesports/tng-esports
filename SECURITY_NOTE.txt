@@ -1,0 +1,15 @@
+GITHUB SECRET SCANNING NOTE
+
+If GitHub reports firebase-config.js as a Google API key, this is expected for a Firebase Web app. Firebase states that Firebase service API keys are not secret; they identify the Firebase project/app, while access control is enforced by Firebase Authentication, Firestore Security Rules and App Check.
+
+Do NOT add any of these to this repository:
+- Razorpay secret key
+- Firebase service-account JSON/private key
+- FCM server key
+- Any database admin credential
+
+Recommended action in Google Cloud/Firebase:
+- Add website/application restrictions to the Firebase API key where supported.
+- Restrict the key to only the Firebase APIs required by this app.
+
+If GitHub still shows the Firebase API-key alert after these steps, review it as a public/client Firebase key rather than treating it as a password.

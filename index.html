@@ -238,23 +238,12 @@ document.addEventListener('click', function(e) {
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+  // Firebase configuration lives in one place (firebase-config.js).
+  // The Firebase web API key is a client identifier, not a password.
+  import { db, collection, addDoc } from "./firebase-module.js";
 
-  // TNG ESPORTS Firebase project
-  const firebaseConfig = {
-    apiKey: "AIzaSyD2vaxxFMTLNCp4CCELcLKOK",
-    authDomain: "tng-esports-974f6.firebaseapp.com",
-    projectId: "tng-esports-974f6",
-    storageBucket: "tng-esports-974f6.firebasestorage.app",
-    messagingSenderId: "240565450608"
-  };
-
-  // appId is not required for this Firestore-only browser setup.
   window.tngSaveRegistration = async function (data) {
     try {
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
       await addDoc(collection(db, "registrations"), data);
       return true;
     } catch (error) {
@@ -286,6 +275,12 @@ document.addEventListener("DOMContentLoaded", function () {
       key: "rzp_test_TPxl1Q7NUmYbAk",
       amount: 14900,
       currency: "INR",
+      method: {
+        upi: true,
+        card: true,
+        netbanking: true,
+        wallet: true
+      },
       name: "TNG ESPORTS",
       description: "Solo Free Fire Tournament Entry Fee",
       notes: {

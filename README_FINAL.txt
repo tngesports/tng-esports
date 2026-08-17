@@ -1,9 +1,16 @@
-TNG ESPORTS FINAL PACKAGE
+TNG ESPORTS — FINAL PACKAGE
 
-IMPORTANT:
-1. This package preserves the original TNG ESPORTS home page and its in-page ₹149 Razorpay TEST checkout registration flow.
-2. leaderboard.html and admin.html are separate pages and are styled to match the original site.
-3. Upload/replace ALL files in the GitHub Pages repository.
-4. Firebase Authentication must have Email/Password enabled and an admin user with email arunachalamb710@gmail.com.
-5. Publish the rules from FIRESTORE_RULES.txt in Firebase Firestore Rules.
-6. The current Razorpay key in index.html is TEST mode. Live money collection requires a live key and server-side payment verification.
+Included:
+- Original home/tournament design
+- ₹149 Razorpay TEST checkout with UPI, Card, Net Banking and Wallet methods requested
+- Registration data saved to Firestore after the checkout success callback
+- Separate leaderboard.html with live Firestore scores
+- Separate admin.html with Firebase Email/Password login and score entry
+- Firestore rules restricting score writes to the configured admin email
+- TNG logo and responsive styling
+
+IMPORTANT SECURITY NOTES
+1. firebase-config.js contains the Firebase Web API key. Firebase documents that Firebase service API keys are not secrets; authorization is provided by Firebase Authentication, Security Rules and App Check. Do not put Firebase service-account private keys or Razorpay secret keys in this static site.
+2. GitHub Secret Scanning may still flag a Firebase API key because it matches a Google API-key pattern. That alert does not mean the Firebase client key is a password. Restrict the key in Google Cloud/Firebase to the website and Firebase APIs used by this app.
+3. The Razorpay key in this package is a TEST key. Do not put a Razorpay secret key in frontend code. Real payments require a server-side order/payment verification flow.
+4. Firestore registration creation currently relies on the browser checkout success callback. For production payments, add server-side Razorpay signature/order verification before accepting a registration as paid.
